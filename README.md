@@ -1,10 +1,10 @@
-# circle
+# circle-loader
 
 > A Vue.js project
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 npm install
 
@@ -24,4 +24,34 @@ npm run e2e
 npm test
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+![demo](http://static.weqianduan.com/github/demo.png)
+
+```js
+{
+    // 帧数
+    frequency: {
+        default: 10,
+        type: Number
+    },
+    // 规格 small normal large
+    size: {
+        default: 'normal',
+        type: String
+    },
+    // 环形高亮颜色
+    highlight: {
+        default: 'rgba(4, 96, 245)',
+        type: String
+    },
+    // 默认颜色
+    defaultColor: {
+        default: 'rgba(0, 0, 0, 0.2)',
+        type: String
+    },
+    // 圆心颜色
+    insideColor: {
+        default: '#fff',
+        type: String
+    }
+}
+```
