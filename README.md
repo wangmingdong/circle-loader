@@ -24,7 +24,7 @@ npm run e2e
 npm test
 ```
 
-![demo](http://static.weqianduan.com/github/demo.png)
+![demo](http://static.weqianduan.com/github/circle_loader_demo.gif)
 
 ```js
 {
