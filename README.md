@@ -52,6 +52,11 @@ npm test
     insideColor: {
         default: '#fff',
         type: String
+    },
+    // 总时长
+    time: {
+        default: 3,
+        type: Number
     }
 }
 ```
