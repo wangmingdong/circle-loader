@@ -18,13 +18,13 @@
                 <div :style="{'background-color': insideColor, 'height': `${insideSize}px`, 'width': `${insideSize}px`, 'left': `${insidePosition}px`, 'top': `${insidePosition}px`}" class="inside-circle"></div>
             </div>
         </div>
-        <!-- <div>
+        <div>
             <button @click="start()">开始</button>
             <button @click="stop()">暂停</button>
             <button @click="reset()">重置</button>
             <button @click="retrun()">回退</button>
             <button @click="retrun(100)">紧急回退</button>
-        </div> -->
+        </div>
     </div>
 </template>
 
@@ -49,7 +49,7 @@ export default {
         },
         // 默认颜色
         defaultColor: {
-            default: 'rgba(61, 61, 61)',
+            default: '#eee',
             type: String
         },
         // 圆心颜色
