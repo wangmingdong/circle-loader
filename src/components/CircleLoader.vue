@@ -15,16 +15,16 @@
                         :style="{'transform': `rotate(${rotateRight}deg)`, 'border-width': `${borderWidth}px`, 'border-top-color': highlight, 'border-right-color': highlight}"
                     ></span>
                 </div>
-                <div :style="{'background-color': insideColor}" class="inside-circle"></div>
+                <div :style="{'background-color': insideColor, 'height': `${insideSize}px`, 'width': `${insideSize}px`, 'left': `${insidePosition}px`, 'top': `${insidePosition}px`}" class="inside-circle"></div>
             </div>
         </div>
-        <div>
+        <!-- <div>
             <button @click="start()">开始</button>
             <button @click="stop()">暂停</button>
             <button @click="reset()">重置</button>
             <button @click="retrun()">回退</button>
             <button @click="retrun(100)">紧急回退</button>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -49,19 +49,24 @@ export default {
         },
         // 默认颜色
         defaultColor: {
-            default: 'rgba(0, 0, 0, 0.2)',
+            default: 'rgba(61, 61, 61)',
             type: String
         },
         // 圆心颜色
         insideColor: {
             default: '#fff',
             type: String
+        },
+        // 总时长
+        time: {
+            default: 3,
+            type: Number
         }
     },
     data() {
         return {
             // 动画总时长
-            time: 3,
+            // time: 3,
             // 当前时间
             currentTime: 0,
             rotateLeft: 225,
@@ -99,11 +104,14 @@ export default {
             this.insidePosition = 15
             this.borderWidth = 50
         } else if (this.size === 'large') {
-            this.totalSize = 100
-            this.insideSize = 70
-            this.insidePosition = 15
-            this.borderWidth = 50
+            this.totalSize = 200
+            this.insideSize = 130
+            this.insidePosition = 35
+            this.borderWidth = 100
         }
+    },
+    beforeDestroy() {
+        this.clearTimer()
     },
     methods: {
         clearTimer() {
@@ -118,21 +126,25 @@ export default {
                 this.currentTime += this.frequency / 1000
                 if (this.currentTime >= this.time) {
                     this.clearTimer()
+                    this.loadOver()
+                    return
                 }
                 let rate = this.currentTime / this.time
                 this.state = 1
                 // console.log(rate)
                 // 前半段
-                if (this.currentTime <= this.time / 2) {
-                    this.rotateLeft = 225
-                    this.rotateLeft += 360 * rate
-                    this.rotateRight = 225
-                } else {
+                this.$nextTick(() => {
+                    if (this.currentTime <= this.time / 2) {
+                        this.rotateLeft = 225
+                        this.rotateLeft += 360 * rate
+                        this.rotateRight = 225
+                    } else {
                     // 后半圈
-                    this.rotateLeft = 405
-                    this.rotateRight = 225
-                    this.rotateRight += 360 * (rate - 0.5)
-                }
+                        this.rotateLeft = 405
+                        this.rotateRight = 225
+                        this.rotateRight += 360 * (rate - 0.5)
+                    }
+                })
             }, this.frequency)
         },
         stop() {
@@ -152,23 +164,30 @@ export default {
                 this.currentTime -= this.frequency / shotTime
                 if (this.currentTime <= 0) {
                     this.reset()
+                    return
                 }
                 let rate = this.currentTime / this.time
                 this.state = -1
                 // 前半段
-                if (this.currentTime <= this.time / 2) {
-                    this.rotateLeft = 225 + 360 * rate
-                    this.rotateRight = 225
-                } else {
+                this.$nextTick(() => {
+                    if (this.currentTime <= this.time / 2) {
+                        this.rotateLeft = 225 + 360 * rate
+                        this.rotateRight = 225
+                    } else {
                     // 后半圈
-                    this.rotateLeft = 405
-                    this.rotateRight = 225 + 360 * (rate - 0.5)
-                }
+                        this.rotateLeft = 405
+                        this.rotateRight = 225 + 360 * (rate - 0.5)
+                    }
+                })
             }, this.frequency)
         },
-        // 清空
+        // 加载结束
+        loadOver() {
+            this.$emit('circle-loader-over')
+        },
+        // 回退结束
         rebackOver() {
-            console.log('over')
+            console.log('clear')
         }
     }
 }
@@ -221,8 +240,11 @@ export default {
     position: relative;
     width: 50%;
 }
+.timer .hand:first-of-type {
+    margin-right: -1px;
+}
 .timer .hand:last-of-type {
-    right: 1px;
+    margin-left: -1px;
 }
 
 .timer .hand span {
